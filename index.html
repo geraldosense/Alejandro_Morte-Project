@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Recursos operativos de Dueños de Fábrica Industrial — Capital Humano Industrial. Diagnóstico, valoración y sistemas para dueños de fábrica PYME.">
+  <title>Dueños de Fábrica Industrial · Recursos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="enr enr-biblioteca" id="top" data-brand="Dueños de Fábrica Industrial">
+
+  <header class="siteTopbar" aria-label="Cabecera del sitio">
+    <div class="siteTopbarLine" aria-hidden="true"></div>
+    <div class="siteTopbarInner">
+      <a class="siteTopbarBrand" href="#top">
+        <span class="siteTopbarCopy">
+          <span class="siteTopbarName" data-i18n="brandName">DUEÑOS DE FÁBRICA INDUSTRIAL</span>
+          <span class="siteTopbarTag" data-i18n-html="brandTag">Recursos para <span class="serif">dueños de fábrica</span></span>
+        </span>
+      </a>
+      <div class="siteLangSwitch" role="group" aria-label="Idioma" data-i18n-aria="langLabel">
+        <button type="button" class="siteLangBtn" data-lang="pt" aria-pressed="false">PT</button>
+        <button type="button" class="siteLangBtn is-active" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="siteLangBtn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <div class="siteTopbarShine" aria-hidden="true"></div>
+  </header>
+
+  <div class="inner">
+    <header class="welcome">
+      <p class="heroLead" data-rise data-i18n="heroLead">Accede a la carpeta de Google Drive con todos los recursos para garantizar cada lote al cliente con calidad y producción cuadradas.</p>
+      <p class="heroSubhead" data-rise data-i18n="heroSubhead">El sistema que probamos en nuestra propia fábrica antes de venderlo a nadie, al que puedes acceder en menos de 2 minutos</p>
+      <div class="driveCtaWrap" data-rise>
+        <button type="button" class="driveCta" data-openform data-i18n="driveCta">ACCEDER A LA CARPETA DE GOOGLE DRIVE</button>
+      </div>
+      <div class="introVideo" id="morte-video" data-rise>
+        <div class="vslShell">
+          <div class="vslGlow"></div>
+          <div class="vslFrame">
+            <img class="vslPoster" id="vslPoster" src="https://img.youtube.com/vi/6r5Q8hMBE8w/maxresdefault.jpg" alt="Vídeo de presentación">
+            <iframe id="introVideo" data-src="https://www.youtube.com/embed/6r5Q8hMBE8w?autoplay=1&mute=0&rel=0&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Vídeo de presentación"></iframe>
+            <button type="button" class="vslUnmute" id="vslUnmute" data-i18n-aria="vslUnmuteAria" aria-label="Activar el sonido del vídeo">
+              <svg viewBox="0 0 64 64" width="56" height="56" fill="none" aria-hidden="true">
+                <path d="M18 26v12h8l10 10V16L26 26h-8Z" fill="currentColor" opacity="0.9"/>
+                <path d="M44 22l-4 4M48 32l-8 8M44 42l-4-4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              <span class="vslUnmuteTop" data-i18n="vslUnmuteTop">Pulse aquí</span>
+              <span class="vslUnmuteBottom" data-i18n="vslUnmuteBottom">para activar el sonido</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section shelfSection" aria-labelledby="shelfTitle">
+      <div class="shelfIntro" data-rise>
+        <span class="pill pillBrand" data-i18n="pillBrand">DUEÑOS DE FÁBRICA INDUSTRIAL</span>
+        <h2 class="sectionTitle shelfTitle" id="shelfTitle">
+          <span class="sectionBrandName" data-i18n="shelfBrandName">Dueños de Fábrica Industrial</span>
+          <span class="sectionBrandSub" data-i18n="shelfBrandSub">Recorre cada recurso de la carpeta</span>
+        </h2>
+        <p class="shelfLead" data-i18n="shelfLead">Seis herramientas operativas para diagnosticar, valorar y ordenar tu fábrica — sin depender de consultoras ni de software que no encaja con tu realidad.</p>
+      </div>
+      <div class="shelfBrandPlaque" data-rise aria-hidden="true">
+        <span class="shelfBrandFull" data-i18n="shelfBrandFull">Dueños de Fábrica Industrial</span>
+      </div>
+      <div class="headRow headRowShelf" data-rise>
+        <span class="pill" data-i18n="pillShelf">LA ESTANTERÍA</span>
+        <span class="hint" data-i18n="shelfHint">Pasa el ratón · pulsa un libro para ver el vídeo</span>
+      </div>
+      <div class="shelfStage" data-rise>
+        <span class="shelfWall"></span>
+        <div class="shelfScroll">
+          <div class="shelf" id="enrShelf">
+            <span class="bookend"></span>
+            <span class="bookend" data-end="r"></span>
+            <span class="shelfLedge"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista estantería — carrossel de cartas -->
+    <div class="shelfTheater" id="shelfTheater" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="shelfTheaterTitle">
+      <div class="shelfTheaterBackdrop" aria-hidden="true"></div>
+      <div class="shelfTheaterInner">
+        <button type="button" class="shelfTheaterClose" id="shelfTheaterClose" data-i18n-aria="theaterClose" aria-label="Cerrar estantería">✕</button>
+        <div class="shelfTheaterStage">
+          <p class="shelfTheaterDragHint" aria-hidden="true" data-i18n="theaterDragHint">Arrastra con el cursor · ← →</p>
+          <div class="shelfTheaterCarousel" id="shelfTheaterCarousel"></div>
+          <div class="theaterPlayerShell" id="theaterPlayerShell">
+            <div id="theaterYtHost"></div>
+            <div class="shelfTheaterNoVideo" id="shelfTheaterNoVideo" hidden>
+              <span class="shelfTheaterNoVideoIcon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+                  <rect x="6" y="10" width="36" height="28" rx="4" stroke="currentColor" stroke-width="2"/>
+                  <path d="M21 18l10 6-10 6V18Z" fill="currentColor"/>
+                </svg>
+              </span>
+              <p class="shelfTheaterNoVideoText" data-i18n="theaterNoVideo">Vídeo en preparación</p>
+              <p class="shelfTheaterNoVideoHint" data-i18n="theaterNoVideoHint">Selecciona otra carta</p>
+            </div>
+            <div class="shelfTheaterEnd" id="shelfTheaterEnd" hidden>
+              <p class="shelfTheaterEndLabel" data-i18n="theaterEndLabel">Has terminado este recurso</p>
+              <button type="button" class="shelfTheaterNextBtn" id="shelfTheaterNextBtn" data-i18n="theaterNext">Ver el próximo vídeo</button>
+            </div>
+          </div>
+        </div>
+        <div class="shelfTheaterMeta">
+          <span class="shelfTheaterRef" id="shelfTheaterRef"></span>
+          <h3 class="shelfTheaterTitle" id="shelfTheaterTitle"></h3>
+          <p class="shelfTheaterSummary" id="shelfTheaterSummary"></p>
+        </div>
+      </div>
+    </div>
+
+    <section class="section catalogSection" aria-labelledby="catalogTitle">
+      <div class="catalogIntro" data-rise>
+        <span class="pill pillBrand" data-i18n="pillBrand">DUEÑOS DE FÁBRICA INDUSTRIAL</span>
+        <h2 class="sectionTitle catalogTitle" id="catalogTitle" data-i18n-html="catalogTitle">Qué hay dentro de la <span class="serif">carpeta</span></h2>
+        <p class="catalogWarning" data-i18n="catalogWarning">(No caigas en el error de pensar que porque es gratis no tiene valor)</p>
+        <p class="catalogQuote" data-i18n="catalogQuote">"Mi estrategia es y siempre va a ser darte mejor contenido gratuito del que el resto del mercado te da pagando"</p>
+      </div>
+      <div class="headRow headRowCatalog" data-rise>
+        <span class="pill" data-i18n="pillCatalog">EL CATÁLOGO</span>
+        <span class="count" id="catalogCount">06 RECURSOS · DFI</span>
+      </div>
+      <div class="catalog" id="enrCatalog"></div>
+      <div class="catalogCtaWrap" data-rise>
+        <button type="button" class="driveCta" data-openform data-i18n="catalogCta">ACCEDER A LOS RECURSOS</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="siteAnchor">
+    <span class="siteAnchorLine"></span>
+    <span class="siteAnchorText" data-i18n="siteAnchor">CONTROLA O PIERDE.</span>
+    <span class="siteAnchorLine"></span>
+  </div>
+
+  <footer class="footerMorte">
+    <div class="footerInner">
+      <div class="footerMain">
+        <div class="footerBrandBlock">
+          <span class="footerEyebrow" data-i18n="footerEyebrow">DUEÑOS DE FÁBRICA INDUSTRIAL</span>
+          <p class="footerBrand" data-i18n-html="footerBrand">Capital Humano <span class="serif">Industrial</span></p>
+        </div>
+        <nav class="footerNav" aria-label="Enlaces legales">
+          <span class="footerNavLabel" data-i18n="footerNavLabel">Legal</span>
+          <ul class="footerLinks">
+            <li><a href="https://legal.grupomorte.cloud/politica-de-privacidad" target="_blank" rel="noopener noreferrer" data-i18n="footerPrivacy">Política de Privacidad</a></li>
+            <li><a href="https://legal.grupomorte.cloud/politica-de-cookies" target="_blank" rel="noopener noreferrer" data-i18n="footerCookies">Política de Cookies</a></li>
+            <li><a href="https://legal.grupomorte.cloud/aviso-legal" target="_blank" rel="noopener noreferrer" data-i18n="footerLegal">Aviso Legal</a></li>
+            <li><a href="https://legal.grupomorte.cloud/politica-de-whatsapp" target="_blank" rel="noopener noreferrer" data-i18n="footerWhatsapp">Política de WhatsApp</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footerBottom">
+        <span class="footerCopy" data-i18n="footerCopy">© 2026 Capital Humano Industrial · Todos los derechos reservados</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="enrModalOverlay" id="enrModal" role="dialog" aria-modal="true">
+    <div class="enrModal">
+      <button type="button" class="enrModalClose" id="enrModalClose" data-i18n-aria="modalClose" aria-label="Cerrar">✕</button>
+      <div class="enrModalVideo" id="enrModalVideo"></div>
+      <div class="enrModalFoot">
+        <div class="enrModalInfo">
+          <span class="enrModalRef" id="enrModalRef"></span>
+          <h3 class="enrModalTitle" id="enrModalTitle"></h3>
+        </div>
+        <div class="enrModalActions">
+          <a id="enrModalYt" href="#" target="_blank" rel="noopener noreferrer" class="fichaLink"><span data-i18n="modalYt">Ver en YouTube</span> <span aria-hidden="true">↗</span></a>
+          <a id="enrModalRes" href="#" target="_blank" rel="noopener noreferrer" class="fichaLink fichaLinkPrimary"><span id="enrModalResLbl" data-i18n="modalRes">Abrir recurso</span> <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="enrFormOverlay" id="enrForm" role="dialog" aria-modal="true">
+    <div class="enrFormDialog">
+      <button type="button" class="enrFormClose" id="enrFormClose" data-i18n-aria="modalClose" aria-label="Cerrar">✕</button>
+      <div class="enrFormBody">
+        <span class="enrFormKicker" data-i18n="formKicker">DUEÑOS DE FÁBRICA INDUSTRIAL</span>
+        <h3 class="enrFormTitle" data-i18n-html="formTitle">Accede a la carpeta de <span class="serif">Google Drive</span></h3>
+        <p class="enrFormLead" data-i18n="formLead">Completa el formulario para recibir acceso inmediato a los 6 recursos operativos de Capital Humano Industrial.</p>
+        <div class="enrGhlSlot">
+          <iframe
+            src="https://links.youfunnelcloud.com/widget/form/IjdzCD7ggZ2ONUt1MbI7"
+            id="inline-IjdzCD7ggZ2ONUt1MbI7"
+            data-layout="{'id':'INLINE'}"
+            data-trigger-type="alwaysShow"
+            data-trigger-value=""
+            data-activation-type="alwaysActivated"
+            data-activation-value=""
+            data-deactivation-type="neverDeactivate"
+            data-deactivation-value=""
+            data-form-name="Modal Optin MORTE Recursos"
+            data-height="656"
+            data-layout-iframe-id="inline-IjdzCD7ggZ2ONUt1MbI7"
+            data-form-id="IjdzCD7ggZ2ONUt1MbI7"
+            title="Modal Optin MORTE Recursos"
+            scrolling="no">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="https://www.youtube.com/iframe_api" async></script>
+<script src="js/app.js"></script>
+<script src="https://links.youfunnelcloud.com/js/form_embed.js" async></script>
+</body>
+</html>
