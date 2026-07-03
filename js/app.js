@@ -9,7 +9,7 @@ var root = document.querySelector(".enr-biblioteca");
 
   function applyStaticI18n() {
     var dict = window.DFI_I18N[currentLang];
-    document.documentElement.lang = currentLang === "pt" ? "pt" : currentLang;
+    document.documentElement.lang = currentLang;
     document.title = dict.pageTitle;
     var meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", dict.metaDescription);
@@ -25,13 +25,34 @@ var root = document.querySelector(".enr-biblioteca");
       var key = el.getAttribute("data-i18n-aria");
       if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
     });
-    var langGroup = root.querySelector(".siteLangSwitch");
-    if (langGroup && dict.langLabel) langGroup.setAttribute("aria-label", dict.langLabel);
-    root.querySelectorAll(".siteLangBtn").forEach(function (btn) {
+    var langPanel = root.querySelector("#siteLangPanel");
+    if (langPanel && dict.langLabel) langPanel.setAttribute("aria-label", dict.langLabel);
+    root.querySelectorAll(".siteLangOption").forEach(function (btn) {
       var on = btn.getAttribute("data-lang") === currentLang;
       btn.classList.toggle("is-active", on);
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-selected", on ? "true" : "false");
     });
+  }
+
+  function closeLangMenu() {
+    var langMenu = root.querySelector("#siteLangMenu");
+    var langTrigger = root.querySelector("#siteLangTrigger");
+    var langPanel = root.querySelector("#siteLangPanel");
+    if (!langMenu || !langTrigger || !langPanel) return;
+    langMenu.classList.remove("is-open");
+    langTrigger.setAttribute("aria-expanded", "false");
+    langPanel.hidden = true;
+  }
+
+  function toggleLangMenu() {
+    var langMenu = root.querySelector("#siteLangMenu");
+    var langTrigger = root.querySelector("#siteLangTrigger");
+    var langPanel = root.querySelector("#siteLangPanel");
+    if (!langMenu || !langTrigger || !langPanel) return;
+    var open = !langMenu.classList.contains("is-open");
+    langMenu.classList.toggle("is-open", open);
+    langTrigger.setAttribute("aria-expanded", open ? "true" : "false");
+    langPanel.hidden = !open;
   }
 
   function mergeVols() {
@@ -152,8 +173,10 @@ var root = document.querySelector(".enr-biblioteca");
   var theaterRef = root.querySelector("#shelfTheaterRef");
   var theaterTitle = root.querySelector("#shelfTheaterTitle");
   var theaterSummary = root.querySelector("#shelfTheaterSummary");
+  var theaterMeta = root.querySelector(".shelfTheaterMeta");
   var theaterCarousel = root.querySelector("#shelfTheaterCarousel");
   var theaterStage = root.querySelector(".shelfTheaterStage");
+  var theaterInner = root.querySelector(".shelfTheaterInner");
   var theaterDragLayer = null;
   var theaterPlayerShell = root.querySelector("#theaterPlayerShell");
   var theaterNoVideo = root.querySelector("#shelfTheaterNoVideo");
@@ -188,6 +211,7 @@ var root = document.querySelector(".enr-biblioteca");
   }
 
   function buildTheaterCards() {
+    reparentPlayerToStage();
     theaterCarousel.innerHTML = "";
     theaterDragLayer = document.createElement("div");
     theaterDragLayer.className = "shelfTheaterDragLayer";
@@ -199,24 +223,28 @@ var root = document.querySelector(".enr-biblioteca");
       card.setAttribute("data-theater", v.n);
       card.setAttribute("data-offset", "0");
       card.setAttribute("aria-label", v.title);
-      var thumb = thumbUrl(v);
+      var thumb = v.thumb || thumbUrl(v);
       card.innerHTML =
-        '<div class="theaterCardInner">' +
+        '<span class="theaterCardLabel">' + esc(v.title) + '</span>' +
+        '<div class="theaterCardFrame">' +
           '<div class="theaterCardMedia">' +
             (thumb
               ? '<img class="theaterCardImg" src="' + thumb + '" alt="" loading="lazy">'
-              : '<span class="theaterCardPlaceholder">' + esc(v.short) + '</span>') +
+              : '<span class="theaterCardPlaceholder">' + esc(v.short || v.n) + '</span>') +
             '<span class="theaterCardShade" aria-hidden="true"></span>' +
             (hasVideo(v) ? '<span class="theaterCardPlay" aria-hidden="true"></span>' : '') +
-          '</div>' +
-          '<div class="theaterCardFoot">' +
-            '<span class="theaterCardNum">' + v.n + '</span>' +
-            '<span class="theaterCardTitle">' + esc(v.short) + '</span>' +
+            '<span class="theaterCardBrand">' + esc(BRAND.mark) + '</span>' +
           '</div>' +
         '</div>';
       theaterDragLayer.appendChild(card);
     });
     theaterCarousel.appendChild(theaterDragLayer);
+  }
+
+  function reparentPlayerToStage() {
+    if (theaterStage && theaterPlayerShell && theaterPlayerShell.parentNode !== theaterStage) {
+      theaterStage.appendChild(theaterPlayerShell);
+    }
   }
 
   function mountPlayerShell() {
@@ -233,7 +261,7 @@ var root = document.querySelector(".enr-biblioteca");
       var offset = idx - activeIdx;
       el.setAttribute("data-offset", String(offset));
       el.classList.toggle("is-active", offset === 0);
-      el.setAttribute("aria-hidden", Math.abs(offset) > 3 ? "true" : "false");
+      el.setAttribute("aria-hidden", Math.abs(offset) > 1 ? "true" : "false");
     });
     mountPlayerShell();
   }
@@ -249,10 +277,23 @@ var root = document.querySelector(".enr-biblioteca");
     theaterNextBtn.setAttribute("data-theater", next.n);
   }
 
-  function updateTheaterMeta(v) {
-    theaterRef.textContent = v.module;
-    theaterTitle.textContent = v.title;
-    theaterSummary.textContent = v.summary;
+  function updateTheaterMeta(v, animate) {
+    function apply() {
+      theaterRef.textContent = v.module;
+      theaterTitle.textContent = v.title;
+      theaterSummary.textContent = v.summary;
+    }
+    if (!theaterMeta || animate === false) {
+      apply();
+      return;
+    }
+    theaterMeta.classList.add("is-changing");
+    window.setTimeout(function () {
+      apply();
+      window.requestAnimationFrame(function () {
+        theaterMeta.classList.remove("is-changing");
+      });
+    }, 190);
   }
 
   function showTheaterPlayer(hasVid) {
@@ -267,7 +308,7 @@ var root = document.querySelector(".enr-biblioteca");
       height: "100%",
       width: "100%",
       videoId: v.youtubeId,
-      playerVars: { autoplay: 1, rel: 0, modestbranding: 1, playsinline: 1, enablejsapi: 1 },
+      playerVars: { autoplay: 1, controls: 1, rel: 0, modestbranding: 1, playsinline: 1, enablejsapi: 1, fs: 1 },
       events: { onStateChange: onYtStateChange }
     });
   }
@@ -293,9 +334,10 @@ var root = document.querySelector(".enr-biblioteca");
   function selectTheater(n, autoplay) {
     var v = volByN(n);
     if (!v) return;
+    var isSwitch = currentTheaterN && currentTheaterN !== n;
     resetDragLayer(false);
     currentTheaterN = n;
-    updateTheaterMeta(v);
+    updateTheaterMeta(v, isSwitch);
     setActiveTheaterCard(n);
     loadTheaterVideo(v);
     if (autoplay !== false && hasVideo(v)) hideTheaterEnd();
@@ -304,30 +346,73 @@ var root = document.querySelector(".enr-biblioteca");
   function goToAdjacentTheater(direction) {
     if (!currentTheaterN) return;
     var idx = volIndex(currentTheaterN) + direction;
-    if (idx < 0 || idx >= VOLS.length) return;
+    if (idx < 0 || idx >= VOLS.length) {
+      if (theaterDragLayer) {
+        theaterDragLayer.classList.add("is-snapping", "is-edge");
+        theaterDragLayer.style.transform = "translateX(" + (direction > 0 ? -28 : 28) + "px)";
+        window.setTimeout(function () { resetDragLayer(true); }, 220);
+      }
+      wheelAccum = 0;
+      return;
+    }
     hideTheaterEnd();
+    wheelAccum = 0;
     selectTheater(VOLS[idx].n);
   }
 
   function resetDragLayer(animate) {
     if (!theaterDragLayer) return;
-    theaterDragLayer.classList.remove("is-snapping");
+    theaterDragLayer.classList.remove("is-snapping", "is-edge");
     theaterDragLayer.style.transform = "";
     if (animate) {
       theaterDragLayer.classList.add("is-snapping");
       window.setTimeout(function () {
         if (theaterDragLayer) theaterDragLayer.classList.remove("is-snapping");
-      }, 380);
+      }, 400);
     }
   }
 
-  /* —— Arrastar com o rato / toque —— */
+  /* —— Arrastar com o rato / toque / roda —— */
   var drag = { active: false, startX: 0, currentX: 0, pointerId: null, didDrag: false };
   var suppressCardClick = false;
   var DRAG_THRESHOLD = 56;
+  var wheelLock = false;
+  var wheelAccum = 0;
+  var wheelResetTimer = null;
+  var WHEEL_COOLDOWN = 380;
+  var WHEEL_TRIGGER = 28;
+  var WHEEL_TARGETS = [];
+
+  function bindTheaterWheel(el) {
+    if (!el || WHEEL_TARGETS.indexOf(el) !== -1) return;
+    el.addEventListener("wheel", onTheaterWheel, { passive: false });
+    WHEEL_TARGETS.push(el);
+  }
+
+  function unbindTheaterWheel() {
+    WHEEL_TARGETS.forEach(function (el) {
+      el.removeEventListener("wheel", onTheaterWheel, { passive: false });
+    });
+    WHEEL_TARGETS = [];
+  }
+
+  function attachTheaterWheelListeners() {
+    unbindTheaterWheel();
+    bindTheaterWheel(theater);
+    bindTheaterWheel(theaterInner);
+    bindTheaterWheel(theaterStage);
+    bindTheaterWheel(theaterCarousel);
+  }
+
+  function isVideoInteractionTarget(el) {
+    return el && el.closest('.theaterCard[data-offset="0"] .theaterCardMedia, #theaterYtHost, .theaterPlayerShell, .theaterCard[data-offset="0"] .theaterPlayerShell');
+  }
 
   function isDragBlockedTarget(el) {
-    return el && el.closest(".shelfTheaterNextBtn, .shelfTheaterClose, .shelfTheaterEnd, .shelfTheaterNoVideo, #theaterYtHost, #theaterYtHost iframe");
+    if (!el) return false;
+    if (el.closest(".shelfTheaterNextBtn, .shelfTheaterClose, .shelfTheaterEnd, .shelfTheaterNoVideo")) return true;
+    if (isVideoInteractionTarget(el)) return true;
+    return false;
   }
 
   function onTheaterPointerDown(e) {
@@ -369,13 +454,40 @@ var root = document.querySelector(".enr-biblioteca");
       suppressCardClick = true;
       hideTheaterEnd();
       goToAdjacentTheater(delta < 0 ? 1 : -1);
-      resetDragLayer(false);
     } else {
       resetDragLayer(true);
     }
 
     if (drag.didDrag) suppressCardClick = true;
     drag.didDrag = false;
+  }
+
+  function onTheaterWheel(e) {
+    if (!theater || !theater.classList.contains("open")) return;
+    if (wheelLock || drag.active) return;
+    if (e.target && e.target.closest(".shelfTheaterClose, .shelfTheaterNextBtn")) return;
+    if (isVideoInteractionTarget(e.target)) return;
+
+    var raw = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (e.deltaMode === 1) raw *= 16;
+    else if (e.deltaMode === 2) raw *= window.innerHeight;
+    if (!raw) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    wheelAccum += raw;
+    if (wheelResetTimer) window.clearTimeout(wheelResetTimer);
+    wheelResetTimer = window.setTimeout(function () { wheelAccum = 0; }, 120);
+
+    if (Math.abs(wheelAccum) < WHEEL_TRIGGER) return;
+
+    var direction = wheelAccum > 0 ? 1 : -1;
+    wheelAccum = 0;
+    wheelLock = true;
+    hideTheaterEnd();
+    goToAdjacentTheater(direction);
+    window.setTimeout(function () { wheelLock = false; }, WHEEL_COOLDOWN);
   }
 
   function openTheater(n) {
@@ -386,16 +498,41 @@ var root = document.querySelector(".enr-biblioteca");
       theater.classList.add("open");
       theater.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+      root.classList.add("theater-open");
     }
     selectTheater(n);
+    if (!alreadyOpen) attachTheaterWheelListeners();
+  }
+
+  function destroyTheaterPlayer() {
+    if (ytPlayer) {
+      try {
+        if (ytPlayer.stopVideo) ytPlayer.stopVideo();
+        if (ytPlayer.destroy) ytPlayer.destroy();
+      } catch (err) { /* noop */ }
+      ytPlayer = null;
+    }
+    if (theaterYtHost) {
+      theaterYtHost.innerHTML = "";
+      theaterYtHost.style.display = "none";
+    }
+    ytPending = null;
   }
 
   function closeTheater() {
     if (!theater) return;
     theater.classList.remove("open");
     theater.setAttribute("aria-hidden", "true");
+    root.classList.remove("theater-open");
+    reparentPlayerToStage();
+    unbindTheaterWheel();
+    wheelAccum = 0;
+    wheelLock = false;
+    if (wheelResetTimer) window.clearTimeout(wheelResetTimer);
+    wheelResetTimer = null;
     hideTheaterEnd();
-    if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+    destroyTheaterPlayer();
+    if (theaterNoVideo) theaterNoVideo.hidden = true;
     currentTheaterN = null;
     if (!root.querySelector("#enrModal.open") && !root.querySelector("#enrForm.open")) {
       document.body.style.overflow = "";
@@ -523,7 +660,10 @@ var root = document.querySelector(".enr-biblioteca");
   }
 
   function setLanguage(lang) {
-    if (!window.DFI_I18N[lang] || lang === currentLang) return;
+    if (!window.DFI_I18N[lang] || lang === currentLang) {
+      closeLangMenu();
+      return;
+    }
     currentLang = lang;
     localStorage.setItem("dfi-lang", lang);
     VOLS = mergeVols();
@@ -533,13 +673,29 @@ var root = document.querySelector(".enr-biblioteca");
     buildCatalog();
     updateCatalogCount();
     applyStaticI18n();
+    closeLangMenu();
     if (theaterOpen && activeN) {
       buildTheaterCards();
       selectTheater(activeN);
+      attachTheaterWheelListeners();
     }
   }
 
-  root.querySelectorAll(".siteLangBtn").forEach(function (btn) {
+  var langTrigger = root.querySelector("#siteLangTrigger");
+  var langMenu = root.querySelector("#siteLangMenu");
+  if (langTrigger) {
+    langTrigger.addEventListener("click", function (e) {
+      e.stopPropagation();
+      toggleLangMenu();
+    });
+  }
+  root.querySelectorAll(".siteLangOption").forEach(function (btn) {
     btn.addEventListener("click", function () { setLanguage(btn.getAttribute("data-lang")); });
+  });
+  document.addEventListener("click", function (e) {
+    if (langMenu && !langMenu.contains(e.target)) closeLangMenu();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeLangMenu();
   });
 })();

@@ -198,3 +198,4 @@ Em `js/app.js`, no objecto `VOL_BASE` do recurso `n:"05"`:
 | **Projeto** | Alejandro Morte / Capital Humano Industrial |
 | **Marca** | Dueños de Fábrica Industrial |
 | **Copyright** | © 2026 Capital Humano Industrial |
+
