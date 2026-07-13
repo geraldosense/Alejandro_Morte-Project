@@ -4,6 +4,7 @@ var root = document.querySelector(".enr-biblioteca");
   var BRAND = { mark: "DFI", publisher: "Capital Humano Industrial" };
   var currentLang = localStorage.getItem("dfi-lang") || "es";
   if (!window.DFI_I18N[currentLang]) currentLang = "es";
+  var accessGranted = false;  // SEMPRE começa bloqueado ao entrar na web
 
   function t(key) { return window.DFI_I18N[currentLang][key]; }
 
@@ -99,7 +100,10 @@ var root = document.querySelector(".enr-biblioteca");
       btn.title = v.title;
       btn.setAttribute("data-theater", v.n);
       btn.setAttribute("aria-label", v.title);
-      btn.innerHTML = '<span class="spineCap"></span><span class="spineTitle">' + esc(v.short) + '</span><span class="spineFoot"><span class="spineMark" title="' + esc(t("brandName")) + '"><span class="spineBrand">' + BRAND.mark + '</span></span><span class="spineNum">' + v.n + '</span></span>';
+      btn.setAttribute('data-spine-num', v.n);
+      btn.setAttribute('data-spine-lock', 'true');
+      var spineLock = '<span class="spineLock" aria-hidden="true">🔐</span>';
+      btn.innerHTML = '<span class="spineCap"></span><span class="spineTitle">' + esc(v.short) + '</span>' + spineLock + '<span class="spineFoot"><span class="spineMark" title="' + esc(t("brandName")) + '"><span class="spineBrand">' + BRAND.mark + '</span></span><span class="spineNum">' + v.n + '</span></span>';
       shelf.insertBefore(btn, endR);
     });
   }
@@ -116,10 +120,11 @@ var root = document.querySelector(".enr-biblioteca");
       : '';
     var moduleParts = v.module.split(" · ");
     var moduleCat = moduleParts.length > 2 ? moduleParts[2] : moduleParts[moduleParts.length - 1];
+    var lockIcon = '<span class="fichaLockIcon" aria-hidden="true">🔐</span>';
     var thumbInner = v.thumb
-      ? '<img class="fichaImg" loading="lazy" src="' + v.thumb + '" alt="' + esc(v.title) + '">'
+      ? '<img class="fichaImg" loading="lazy" src="' + v.thumb + '" alt="' + esc(v.title) + '">' + lockIcon
       : (isFeatured
-        ? '<span class="fichaPlaceholder"><span class="fichaPlaceholderIcon">▶</span></span>'
+        ? '<span class="fichaPlaceholder"><span class="fichaPlaceholderIcon">▶</span></span>' + lockIcon
         : '<div class="fichaThumbPro">' +
             '<span class="fichaThumbGrid" aria-hidden="true"></span>' +
             '<span class="fichaThumbIcon" aria-hidden="true">' +
@@ -129,11 +134,11 @@ var root = document.querySelector(".enr-biblioteca");
               '</svg>' +
             '</span>' +
             '<span class="fichaThumbStatus">' + esc(t("videoPreparing")) + '</span>' +
-          '</div>');
+          '</div>' + lockIcon);
     var thumbTag = hasVideo(v)
       ? '<button type="button" class="fichaThumb" data-open="' + v.n + '" aria-label="Ver el vídeo: ' + esc(v.title) + '">'
-      : '<div class="fichaThumb fichaThumb--pending" aria-hidden="true">';
-    var thumbClose = hasVideo(v) ? '</button>' : '</div>';
+      : '<button type="button" class="fichaThumb fichaThumb--pending" data-open="' + v.n + '" aria-label="Acceder a: ' + esc(v.title) + '">';
+    var thumbClose = '</button>';
     var videoBtn = hasVideo(v)
       ? '<button type="button" class="fichaLink fichaLinkPrimary" data-open="' + v.n + '"><span class="fichaLinkPlay"></span> ' + esc(t("watchVideo")) + '</button>'
       : (isFeatured
@@ -168,6 +173,11 @@ var root = document.querySelector(".enr-biblioteca");
   buildCatalog();
   updateCatalogCount();
   applyStaticI18n();
+  updateAccessUI();
+  
+  // SEMPRE bloqueado ao entrar na web
+  root.classList.remove("access-granted");
+  
   var theater = root.querySelector("#shelfTheater");
   var theaterClose = root.querySelector("#shelfTheaterClose");
   var theaterRef = root.querySelector("#shelfTheaterRef");
@@ -575,6 +585,17 @@ var root = document.querySelector(".enr-biblioteca");
   }
 
   root.addEventListener("click", function (e) {
+    var spineT = e.target.closest("[data-spine-lock]");
+    if (spineT) {
+      e.preventDefault();
+      var n = spineT.getAttribute("data-spine-num");
+      if (accessGranted) {
+        openTheater(n);
+      } else {
+        openForm();
+      }
+      return;
+    }
     var t = e.target.closest("[data-theater]");
     if (!t) return;
     if (suppressCardClick) {
@@ -605,14 +626,18 @@ var root = document.querySelector(".enr-biblioteca");
   var resLbl = root.querySelector("#enrModalResLbl");
 
   function openModal(v) {
-    if (!hasVideo(v)) return;
-    openTheater(v.n);
+    if (!hasVideo(v)) { openForm(); return; }
+    if (!accessGranted) {
+      openForm();
+    } else {
+      openTheater(v.n);
+    }
   }
   function close() { closeTheater(); }
 
   root.addEventListener("click", function (e) {
     var t = e.target.closest("[data-open]");
-    if (t) { var v = volByN(t.getAttribute("data-open")); if (v && hasVideo(v)) openModal(v); }
+    if (t) { var v = volByN(t.getAttribute("data-open")); if (v) openModal(v); }
   });
   root.querySelector("#enrModalClose").addEventListener("click", function () {
     root.querySelector("#enrModal").classList.remove("open");
@@ -621,8 +646,60 @@ var root = document.querySelector(".enr-biblioteca");
 
   // Popup del formulario (acceso a Google Drive)
   var formOverlay = root.querySelector("#enrForm");
+  var formIframe = formOverlay.querySelector("iframe");
+  var formConfirmBtn = root.querySelector("#enrFormConfirm");
+  
   function openForm() { formOverlay.classList.add("open"); document.body.style.overflow = "hidden"; }
   function closeForm() { formOverlay.classList.remove("open"); document.body.style.overflow = ""; }
+  
+  function grantAccess() {
+    accessGranted = true;
+    root.classList.add("access-granted");
+    closeForm();
+    
+    // Efeito visual profissional de desbloqueio
+    var successMsg = document.createElement("div");
+    successMsg.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999999; background: rgba(34,197,94,0.95); color: #000; padding: 24px 48px; border-radius: 16px; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.05em; box-shadow: 0 20px 60px rgba(34,197,94,0.4); backdrop-filter: blur(10px); animation: successIn 0.4s cubic-bezier(0.22,1,0.36,1);";
+    successMsg.textContent = "✓ Acceso Desbloqueado";
+    root.appendChild(successMsg);
+    
+    setTimeout(function() {
+      successMsg.style.animation = "successOut 0.3s cubic-bezier(0.22,1,0.36,1) forwards";
+      setTimeout(function() { successMsg.remove(); }, 300);
+    }, 1800);
+    
+    updateAccessUI();
+  }
+  
+  function updateAccessUI() {
+    root.querySelectorAll(".fichaLockIcon").forEach(function(el) {
+      if (accessGranted) {
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+        el.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+      } else {
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+      }
+    });
+    root.querySelectorAll(".spineLock").forEach(function(el) {
+      if (accessGranted) {
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+        el.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+      } else {
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+      }
+    });
+  }
+  
+  window.grantAccess = grantAccess;
+  
+  if (formConfirmBtn) {
+    formConfirmBtn.addEventListener("click", grantAccess);
+  }
+  
   root.addEventListener("click", function (e) { if (e.target.closest("[data-openform]")) { e.preventDefault(); openForm(); } });
   root.querySelector("#enrFormClose").addEventListener("click", closeForm);
   formOverlay.addEventListener("click", function (e) { if (e.target === formOverlay) closeForm(); });
