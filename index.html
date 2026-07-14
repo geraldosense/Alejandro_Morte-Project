@@ -95,6 +95,12 @@
         <span class="pill" data-i18n="pillShelf">LA ESTANTERÍA</span>
         <span class="hint" data-i18n="shelfHint">Pasa el ratón · pulsa un libro para ver el vídeo</span>
       </div>
+      <div class="shelfAccessBanner" data-rise>
+        <span class="shelfAccessIcon">🔐</span>
+        <div class="shelfAccessText">
+          <p class="shelfAccessMsg">Regístrate aquí para desbloquear todos los recursos y comenzar tu transformación</p>
+        </div>
+      </div>
       <div class="shelfStage" data-rise>
         <span class="shelfWall"></span>
         <div class="shelfScroll">
@@ -151,6 +157,16 @@
       <div class="headRow headRowCatalog" data-rise>
         <span class="pill" data-i18n="pillCatalog">EL CATÁLOGO</span>
         <span class="count" id="catalogCount">06 RECURSOS · DFI</span>
+      </div>
+      <div class="accessBanner" data-rise>
+        <div class="accessBannerContent">
+          <span class="accessBannerIcon">🔐</span>
+          <div class="accessBannerText">
+            <h3 class="accessBannerTitle">Contenido Exclusivo Desbloqueado</h3>
+            <p class="accessBannerDesc">Regístrate aquí para acceder a los 6 recursos operativos de Capital Humano Industrial y transformar tu fábrica</p>
+          </div>
+          <button type="button" class="accessBannerCta" data-openform>Desbloquear Ahora</button>
+        </div>
       </div>
       <div class="catalog" id="enrCatalog"></div>
       <div class="catalogCtaWrap" data-rise>
@@ -209,9 +225,11 @@
     <div class="enrFormDialog">
       <button type="button" class="enrFormClose" id="enrFormClose" data-i18n-aria="modalClose" aria-label="Cerrar">✕</button>
       <div class="enrFormBody">
-        <span class="enrFormKicker" data-i18n="formKicker">DUEÑOS DE FÁBRICA INDUSTRIAL</span>
-        <h3 class="enrFormTitle" data-i18n-html="formTitle">Accede a la carpeta de <span class="serif">Google Drive</span></h3>
-        <p class="enrFormLead" data-i18n="formLead">Completa el formulario para recibir acceso inmediato a los 6 recursos operativos de Capital Humano Industrial.</p>
+        <div class="enrFormHeader">
+          <span class="enrFormKicker" data-i18n="formKicker">ACCESO INMEDIATO</span>
+          <h3 class="enrFormTitle">Entra a la biblioteca <span class="serif">gratis</span></h3>
+          <p class="enrFormLead">Déjanos tus datos y te abrimos la sala al instante.</p>
+        </div>
         <div class="enrGhlSlot">
           <iframe
             src="https://links.youfunnelcloud.com/widget/form/IjdzCD7ggZ2ONUt1MbI7"
@@ -224,12 +242,37 @@
             data-deactivation-type="neverDeactivate"
             data-deactivation-value=""
             data-form-name="Modal Optin MORTE Recursos"
-            data-height="656"
+            data-height="520"
             data-layout-iframe-id="inline-IjdzCD7ggZ2ONUt1MbI7"
             data-form-id="IjdzCD7ggZ2ONUt1MbI7"
             title="Modal Optin MORTE Recursos"
             scrolling="no">
           </iframe>
+        </div>
+        <div class="enrCountryHelper" id="enrCountryHelper">
+          <label class="enrCountryLabel">Código de país para WhatsApp:</label>
+          <div class="enrCountryGrid" id="enrCountryGrid">
+            <button type="button" class="enrCountryBtn" data-code="+34">🇪🇸 +34</button>
+            <button type="button" class="enrCountryBtn" data-code="+351">🇵🇹 +351</button>
+            <button type="button" class="enrCountryBtn" data-code="+39">🇮🇹 +39</button>
+            <button type="button" class="enrCountryBtn" data-code="+33">🇫🇷 +33</button>
+            <button type="button" class="enrCountryBtn" data-code="+49">🇩🇪 +49</button>
+            <button type="button" class="enrCountryBtn" data-code="+55">🇧🇷 +55</button>
+            <button type="button" class="enrCountryBtn" data-code="+54">🇦🇷 +54</button>
+            <button type="button" class="enrCountryBtn" data-code="+56">🇨🇱 +56</button>
+            <button type="button" class="enrCountryBtn" data-code="+57">🇨🇴 +57</button>
+            <button type="button" class="enrCountryBtn" data-code="+34" data-show-all="true">+ Más</button>
+          </div>
+          <div class="enrCountryExtended" id="enrCountryExtended" style="display:none;">
+            <button type="button" class="enrCountryBtn" data-code="+1">🇺🇸 +1 USA</button>
+            <button type="button" class="enrCountryBtn" data-code="+44">🇬🇧 +44</button>
+            <button type="button" class="enrCountryBtn" data-code="+61">🇦🇺 +61</button>
+            <button type="button" class="enrCountryBtn" data-code="+81">🇯🇵 +81</button>
+            <button type="button" class="enrCountryBtn" data-code="+86">🇨🇳 +86</button>
+            <button type="button" class="enrCountryBtn" data-code="+91">🇮🇳 +91</button>
+            <button type="button" class="enrCountryBtn" data-code="+7">🇷🇺 +7</button>
+            <button type="button" class="enrCountryBtn" data-code="-">← Menos</button>
+          </div>
         </div>
         <button type="button" class="enrFormConfirmBtn" id="enrFormConfirm">Confirmar acceso</button>
       </div>

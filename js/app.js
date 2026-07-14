@@ -692,6 +692,15 @@ var root = document.querySelector(".enr-biblioteca");
         el.style.pointerEvents = "auto";
       }
     });
+    // Actualizar banners de acceso
+    var accessBanners = root.querySelectorAll(".accessBanner, .shelfAccessBanner");
+    accessBanners.forEach(function(banner) {
+      if (accessGranted) {
+        banner.classList.add("hidden");
+      } else {
+        banner.classList.remove("hidden");
+      }
+    });
   }
   
   window.grantAccess = grantAccess;
@@ -775,4 +784,78 @@ var root = document.querySelector(".enr-biblioteca");
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeLangMenu();
   });
+
+  // Country Code Helper para WhatsApp
+  (function initCountryHelper() {
+    var countryGrid = document.getElementById("enrCountryGrid");
+    var countryExtended = document.getElementById("enrCountryExtended");
+    var moreBtn = null;
+    var lessBtn = null;
+    
+    if (!countryGrid) return;
+    
+    // Encontrar botões de "Más" e "Menos"
+    countryGrid.querySelectorAll(".enrCountryBtn[data-show-all]").forEach(function(btn) {
+      moreBtn = btn;
+    });
+    countryExtended.querySelectorAll(".enrCountryBtn").forEach(function(btn) {
+      if (btn.textContent.includes("Menos")) lessBtn = btn;
+    });
+    
+    // Mostrar/esconder lista estendida
+    if (moreBtn) {
+      moreBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        countryGrid.style.display = "none";
+        countryExtended.style.display = "grid";
+      });
+    }
+    if (lessBtn) {
+      lessBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        countryGrid.style.display = "grid";
+        countryExtended.style.display = "none";
+      });
+    }
+    
+    // Listener para todos os botões de código de país
+    var allCountryBtns = document.querySelectorAll(".enrCountryBtn:not([data-show-all])");
+    allCountryBtns.forEach(function(btn) {
+      btn.addEventListener("click", function(e) {
+        e.preventDefault();
+        if (btn.textContent.includes("Menos")) return; // Skip the "Menos" button
+        
+        var code = btn.getAttribute("data-code");
+        if (code === "-") return; // Skip placeholder
+        
+        // Tentar encontrar o campo de WhatsApp no iframe e pré-preenchê-lo
+        var iframeDoc = document.querySelector(".enrGhlSlot iframe").contentDocument;
+        if (!iframeDoc) {
+          // Se o contentDocument não estiver disponível, copiar código para clipboard
+          copyToClipboard(code);
+          return;
+        }
+        
+        var whatsappInput = iframeDoc.querySelector('input[placeholder*="WhatsApp"], input[placeholder*="+34"]');
+        if (whatsappInput) {
+          whatsappInput.value = code + " ";
+          whatsappInput.focus();
+        }
+      });
+    });
+    
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        console.log("Country code copied: " + text);
+      }).catch(function() {
+        // Fallback
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      });
+    }
+  })();
 })();
