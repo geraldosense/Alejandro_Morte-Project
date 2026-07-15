@@ -1,0 +1,59 @@
+SMS — APÓS CADASTRO NO FORMULÁRIO
+==================================
+
+O site NÃO envia SMS. Configura no YouFunnelCloud (GHL) nos workflows
+junto com o email. O número vem do campo WhatsApp/phone do formulário.
+
+Link a incluir na mensagem:
+  https://alejandro-morte-project.vercel.app
+
+Campo telefone no formulário: phone (WhatsApp)
+
+
+VERSÃO PT (colar no GHL → Send SMS)
+-----------------------------------
+Olá {{contact.first_name}}, sou Alejandro Morte (CHI). Acede aos 6 recursos da biblioteca aqui: https://alejandro-morte-project.vercel.app
+
+
+VERSÃO ES (colar no GHL → Send SMS)
+-----------------------------------
+Hola {{contact.first_name}}, soy Alejandro Morte (CHI). Accede a los 6 recursos aquí: https://alejandro-morte-project.vercel.app
+
+
+VERSÃO CURTA (se o operador cortar mensagens longas)
+----------------------------------------------------
+CHI · Alejandro Morte — Acede aos recursos: https://alejandro-morte-project.vercel.app
+
+
+COMO ACTIVAR NO YOUFUNNELCLOUD
+------------------------------
+1. Settings → Phone Numbers → confirmar que tens número SMS activo
+   (LC Phone / Twilio ligado à conta)
+
+2. Abre o workflow "DFI — Email SÍ" (ou cria "DFI — SMS recursos")
+
+3. Depois da ação Send Email, adiciona:
+   → Send SMS
+   → To: {{contact.phone}}
+   → Message: copiar texto PT ou ES acima
+
+4. Repete no workflow NO (mesma mensagem SMS, email diferente)
+
+5. Publish workflow
+
+
+ORDEM RECOMENDADA NO WORKFLOW
+-----------------------------
+Trigger: Form Submitted (IjdzCD7ggZ2ONUt1MbI7)
+  → Condition SÍ ou NO
+  → Send Email (plantilla SÍ ou NO)
+  → Send SMS (texto acima)
+  → Add Tag
+
+
+NOTAS
+-----
+- SMS e email são canais separados — activa os dois no workflow
+- O campo WhatsApp do form grava em contact.phone no GHL
+- Sem número SMS configurado no GHL, o SMS não sai (só email)
+- Alternativa: usar WhatsApp Business API no GHL se tiveres canal WA

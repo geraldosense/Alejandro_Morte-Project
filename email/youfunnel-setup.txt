@@ -61,8 +61,10 @@ WORKFLOW A — SÍ
 3. Filtro/Condition: radio_118iu = SÍ
 4. Ação: Send Email → Template "DFI — Email SÍ recursos"
    From: Alejandro Morte <grupomorte@grupomorte.cloud>
-5. Add Tag: dfi-optin-si
-6. Publish
+5. Ação: Send SMS → To: {{contact.phone}}
+   Message: copiar de email/sms-recursos.txt (versão PT ou ES)
+6. Add Tag: dfi-optin-si
+7. Publish
 
 WORKFLOW B — NO
 1. Automations → Create Workflow → "DFI — Email NO"
@@ -70,8 +72,13 @@ WORKFLOW B — NO
 3. Filtro/Condition: radio_118iu = NO
 4. Ação: Send Email → Template "DFI — Email NO recursos"
    From: Alejandro Morte <grupomorte@grupomorte.cloud>
-5. Add Tag: dfi-optin-no
-6. Publish
+5. Ação: Send SMS → To: {{contact.phone}}
+   Message: copiar de email/sms-recursos.txt (mesmo link biblioteca)
+6. Add Tag: dfi-optin-no
+7. Publish
+
+REQUISITO SMS: YouFunnelCloud → Settings → Phone Numbers
+  → precisas de número LC Phone / Twilio activo para Send SMS funcionar.
 
 IMPORTANTE: apenas UM workflow por resposta (SÍ e NO separados).
 Se existirem workflows duplicados, o lead recebe emails repetidos.
@@ -105,6 +112,7 @@ FICHEIROS NO PROJETO
 email/ghl-pegar-si.html      → colar no GHL (workflow SÍ)
 email/ghl-pegar-no.html      → colar no GHL (workflow NO)
 email/ghl-pegar-pt.html      → versão PT (opcional)
+email/sms-recursos.txt       → texto SMS com link biblioteca
 email/acesso-biblioteca-pt.html → versão visual PT
 confirmar-correo/index.html  → página pós-formulário
 js/config.js                 → URLs centralizadas
@@ -118,11 +126,13 @@ NOTAS
 - Se não recebes nada: workflows não estão Published ou auto-responder off
 
 
-CHECKLIST SE NÃO RECEBES EMAIL
-------------------------------
+CHECKLIST SE NÃO RECEBES EMAIL OU SMS
+-------------------------------------
 □ Workflows SÍ e NO estão Published?
 □ Plantillas têm link https://alejandro-morte-project.vercel.app ?
-□ Verificaste SPAM e PROMOCIONES no telemóvel?
+□ Workflow tem ação Send SMS com {{contact.phone}}?
+□ Tens número SMS activo no GHL (Settings → Phone Numbers)?
+□ Verificaste SPAM e PROMOCIONES no telemóvel (email)?
 □ Esperaste 2-5 minutos?
 □ Contacto aparece no GHL → Contacts após submit?
-□ Histórico de emails no contacto mostra envio?
+□ Histórico do contacto mostra email e/ou SMS enviados?
