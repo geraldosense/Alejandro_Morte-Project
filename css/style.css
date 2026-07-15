@@ -717,8 +717,35 @@ html, body { margin: 0; padding: 0; min-height: 100%; }
   .enrFormTitle { font-size: clamp(1.4rem, 3.5vw, 1.8rem); font-weight: 900; letter-spacing: -0.03em; color: var(--text); margin: 0; }
   .enrFormTitle .serif { color: var(--accent-soft); font-style: italic; }
   .enrFormLead { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text-muted); }
+  .enrFormFields {
+    display: flex; flex-direction: column; gap: 0;
+    border-radius: 14px; overflow: hidden;
+    background: #fff; border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+  }
   .enrGhlSlot { border-radius: 14px; overflow: hidden; background: #fff; }
   .enrGhlSlot iframe { display: block; width: 100%; min-height: 480px; border: none; }
+  .enrFormSuccess {
+    display: none; padding: 28px 22px 24px; text-align: center;
+    background: #fafafa; border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .enrFormFields.is-submitted .enrGhlSlot { display: none; }
+  .enrFormFields.is-submitted .enrFormSuccess { display: block; }
+  .enrFormSuccessKicker {
+    margin: 0 0 10px; font-family: var(--f-mono); font-size: 11px;
+    letter-spacing: 0.24em; text-transform: uppercase; color: #16a34a; font-weight: 700;
+  }
+  .enrFormSuccessTitle {
+    margin: 0 0 12px; font-size: 1.35rem; font-weight: 900; color: #18181b; letter-spacing: -0.03em;
+  }
+  .enrFormSuccessLead {
+    margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: #52525b;
+  }
+  .enrFormSuccessFrom {
+    margin: 0 0 10px; font-size: 12px; font-weight: 600; color: #71717a;
+    font-family: var(--f-mono);
+  }
+  .enrFormSuccessSpam { margin: 0; font-size: 12px; line-height: 1.5; color: #71717a; }
 
   /* —— Vista estantería (theater) —— */
   .shelfTheater {

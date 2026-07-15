@@ -1,0 +1,165 @@
+.enr-confirmar .inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.enr-confirmar .confirmProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.enr-confirmar .confirmProgressEyebrow {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+  font-weight: 700;
+}
+
+.enr-confirmar .confirmProgressPercent {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.enr-confirmar .confirmProgressTrack {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.enr-confirmar .confirmProgressFill {
+  display: block;
+  width: 50%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+}
+
+.enr-confirmar .confirmHero {
+  margin-bottom: 36px;
+}
+
+.enr-confirmar .confirmHeroTitle {
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0 0 20px;
+}
+
+.enr-confirmar .confirmEmailMock {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+
+.enr-confirmar .confirmEmailCaption {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.enr-confirmar .confirmEmailCard {
+  border-radius: 10px;
+  background: #fff;
+  color: #18181b;
+  padding: 14px 16px;
+  box-shadow: 0 8px 24px -16px rgba(0, 0, 0, 0.45);
+}
+
+.enr-confirmar .confirmEmailFrom {
+  font-size: 12px;
+  font-weight: 700;
+  color: #52525b;
+  margin-bottom: 4px;
+}
+
+.enr-confirmar .confirmEmailSubject {
+  font-size: 14px;
+  font-weight: 800;
+  color: #18181b;
+  margin-bottom: 6px;
+}
+
+.enr-confirmar .confirmEmailSnippet {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #71717a;
+  margin: 0;
+}
+
+.enr-confirmar .confirmSpam {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.enr-confirmar .confirmResources {
+  margin-top: 48px;
+}
+
+.enr-confirmar .confirmResourcesKicker {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.enr-confirmar .confirmResourcesTitle {
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin: 0 0 24px;
+  color: var(--text);
+}
+
+.enr-confirmar .confirmGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.enr-confirmar .confirmCard {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.enr-confirmar .confirmCardModule {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.enr-confirmar .confirmCardTitle {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.enr-confirmar .confirmCardSummary {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}

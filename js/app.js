@@ -24,6 +24,10 @@ var root = document.querySelector(".enr-biblioteca");
       var key = el.getAttribute("data-i18n-aria");
       if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
     });
+    root.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n-placeholder");
+      if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
+    });
     var langPanel = root.querySelector("#siteLangPanel");
     if (langPanel && dict.langLabel) langPanel.setAttribute("aria-label", dict.langLabel);
     root.querySelectorAll(".siteLangOption").forEach(function (btn) {
@@ -621,13 +625,70 @@ var root = document.querySelector(".enr-biblioteca");
   // Popup del formulario (acceso a Google Drive)
   var formOverlay = root.querySelector("#enrForm");
 
-  function openForm() { formOverlay.classList.add("open"); document.body.style.overflow = "hidden"; }
-  function closeForm() { formOverlay.classList.remove("open"); document.body.style.overflow = ""; }
+  function openForm() {
+    formOverlay.classList.add("open");
+    document.body.style.overflow = "hidden";
+    resetFormState();
+  }
 
   root.addEventListener("click", function (e) { if (e.target.closest("[data-openform]")) { e.preventDefault(); openForm(); } });
   root.querySelector("#enrFormClose").addEventListener("click", closeForm);
   formOverlay.addEventListener("click", function (e) { if (e.target === formOverlay) closeForm(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeForm(); });
+
+  var formFields = root.querySelector(".enrFormFields");
+  var formSuccess = document.getElementById("enrFormSuccess");
+  var ghlIframe = document.getElementById("inline-IjdzCD7ggZ2ONUt1MbI7");
+
+  function showFormSuccess() {
+    redirectAfterSubmit();
+  }
+
+  function redirectAfterSubmit() {
+    var cfg = window.DFI_CONFIG || {};
+    var url =
+      root.getAttribute("data-confirmar-url") ||
+      cfg.confirmarCorreoUrl ||
+      "confirmar-correo/";
+    window.location.href = url;
+  }
+
+  function resetFormState() {
+    if (!formFields) return;
+    formFields.classList.remove("is-submitted");
+    if (formSuccess) formSuccess.hidden = true;
+  }
+
+  function closeForm() {
+    formOverlay.classList.remove("open");
+    document.body.style.overflow = "";
+    resetFormState();
+  }
+
+  window.addEventListener("message", function (e) {
+    if (!/youfunnelcloud\.com|leadconnectorhq\.com|msgsndr\.com/i.test(e.origin)) return;
+    var data = e.data;
+    if (typeof data === "string") {
+      try { data = JSON.parse(data); } catch (err) { return; }
+    }
+    if (!data || typeof data !== "object") return;
+
+    var height = data.height || data.formHeight || (data.payload && data.payload.height);
+    if (height && ghlIframe) {
+      ghlIframe.style.height = Math.max(Number(height), 480) + "px";
+    }
+
+    var submitted =
+      (data.type === "hsFormCallback" && data.eventName === "onFormSubmitted") ||
+      data.event === "formSubmit" ||
+      data.eventName === "form_submit" ||
+      data.eventName === "onFormSubmitted" ||
+      data.action === "submit" ||
+      data.formSubmit === true ||
+      data.status === "submitted";
+
+    if (submitted) showFormSuccess();
+  });
 
   // Reveal
   var items = root.querySelectorAll("[data-rise]");
@@ -699,4 +760,5 @@ var root = document.querySelector(".enr-biblioteca");
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeLangMenu();
   });
+
 })();

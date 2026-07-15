@@ -1,0 +1,128 @@
+AUTOMATIZAÇÃO DE EMAIL — FLUXO COMPLETO (como lm.grupomorte.cloud)
+==================================================================
+
+Objetivo: após o lead preencher o formulário, recebe email automático
+com os 6 recursos + link da biblioteca, e a web redireciona para
+confirmar-correo/ (página "abre o teu correo").
+
+Remetente (configurar no GHL):
+  Nome:  Alejandro Morte
+  Email: grupomorte@grupomorte.cloud
+
+Link da biblioteca (obrigatório nos emails):
+  https://alejandro-morte-project.vercel.app
+
+Página confirmar correo (redirect após submit):
+  https://alejandro-morte-project.vercel.app/confirmar-correo/
+
+Formulário do site:
+  ID: IjdzCD7ggZ2ONUt1MbI7
+  Campo SÍ/NO: radio_118iu
+
+
+FLUXO COMPLETO
+--------------
+1. Lead clica Drive → preenche formulário (Nombre + WhatsApp + Email + SÍ/NO)
+2. Site redireciona para /confirmar-correo/ (página "50% completado — abre o correo")
+3. GHL envia email automático conforme SÍ ou NO
+4. Lead clica no link do email → abre a biblioteca (vercel.app)
+
+
+PASSO 1 — Plantillas de email (criar 2 no GHL)
+------------------------------------------------
+YouFunnelCloud → Marketing → Emails → Templates → New
+
+TEMPLATE A — Respondeu SÍ
+  Nome:  "DFI — Email SÍ recursos"
+  Assunto: Tu carpeta (ACCIÓN REQUERIDA)
+  Corpo: copiar TODO email/ghl-pegar-si.html
+         (ou versão visual: email/acesso-biblioteca-pt.html adaptada)
+
+TEMPLATE B — Respondeu NO
+  Nome:  "DFI — Email NO recursos"
+  Assunto: Tus recursos operativos están listos
+  Corpo: copiar TODO email/ghl-pegar-no.html
+
+TEMPLATE C — Português (opcional, mesmo fluxo)
+  Assunto: A tua pasta (AÇÃO NECESSÁRIA)
+  Corpo: email/ghl-pegar-pt.html
+
+Verificar que TODOS os links apontam para:
+  https://alejandro-morte-project.vercel.app
+
+
+PASSO 2 — Workflows SÍ / NO (OBRIGATÓRIO para emails funcionarem)
+-----------------------------------------------------------------
+O formulário tem autoResponder DESLIGADO. Os emails só saem via workflow.
+
+WORKFLOW A — SÍ
+1. Automations → Create Workflow → "DFI — Email SÍ"
+2. Trigger: Form Submitted → IjdzCD7ggZ2ONUt1MbI7
+3. Filtro/Condition: radio_118iu = SÍ
+4. Ação: Send Email → Template "DFI — Email SÍ recursos"
+   From: Alejandro Morte <grupomorte@grupomorte.cloud>
+5. Add Tag: dfi-optin-si
+6. Publish
+
+WORKFLOW B — NO
+1. Automations → Create Workflow → "DFI — Email NO"
+2. Trigger: Form Submitted → IjdzCD7ggZ2ONUt1MbI7
+3. Filtro/Condition: radio_118iu = NO
+4. Ação: Send Email → Template "DFI — Email NO recursos"
+   From: Alejandro Morte <grupomorte@grupomorte.cloud>
+5. Add Tag: dfi-optin-no
+6. Publish
+
+IMPORTANTE: apenas UM workflow por resposta (SÍ e NO separados).
+Se existirem workflows duplicados, o lead recebe emails repetidos.
+
+
+PASSO 3 — Redirect do formulário no GHL
+---------------------------------------
+YouFunnelCloud → Sites → Forms → Modal Optin MORTE Recursos
+→ Settings → On Submit → Redirect URL:
+
+  https://alejandro-morte-project.vercel.app/confirmar-correo/
+
+(O site também redireciona via JavaScript — isto é backup.)
+
+Estado actual do form (antes de mudares):
+  Redirect: lm.grupomorte.cloud/landing-prellamada  ← mudar para confirmar-correo
+
+
+PASSO 4 — Testar
+----------------
+1. Abre https://alejandro-morte-project.vercel.app
+2. Clica Drive → preenche com teu email → escolhe SÍ ou NO
+3. Deve abrir /confirmar-correo/ com mensagem "50% completado"
+4. Em 1-5 min: email de Alejandro Morte na inbox
+5. Clica "Acceder a la carpeta de Google Drive" → abre biblioteca
+6. GHL → Contacts → confirma tag dfi-optin-si ou dfi-optin-no
+
+
+FICHEIROS NO PROJETO
+--------------------
+email/ghl-pegar-si.html      → colar no GHL (workflow SÍ)
+email/ghl-pegar-no.html      → colar no GHL (workflow NO)
+email/ghl-pegar-pt.html      → versão PT (opcional)
+email/acesso-biblioteca-pt.html → versão visual PT
+confirmar-correo/index.html  → página pós-formulário
+js/config.js                 → URLs centralizadas
+
+
+NOTAS
+-----
+- O site HTML NÃO envia emails. Só o YouFunnelCloud envia.
+- mailed-by: gm.grupomorte.cloud é NORMAL
+- Se email chega sem link: plantilla incompleta no GHL — colar de novo
+- Se não recebes nada: workflows não estão Published ou auto-responder off
+
+
+CHECKLIST SE NÃO RECEBES EMAIL
+------------------------------
+□ Workflows SÍ e NO estão Published?
+□ Plantillas têm link https://alejandro-morte-project.vercel.app ?
+□ Verificaste SPAM e PROMOCIONES no telemóvel?
+□ Esperaste 2-5 minutos?
+□ Contacto aparece no GHL → Contacts após submit?
+□ Histórico de emails no contacto mostra envio?
